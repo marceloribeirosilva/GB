@@ -11,8 +11,7 @@ export default class CreateDealers1626546664140 implements MigrationInterface {
             name: 'id',
             type: 'int',
             isGenerated: true,
-            isPrimary: true,
-            isNullable: true,
+            isPrimary: true,            
             generationStrategy: 'increment',
           },
           {
