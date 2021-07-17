@@ -1,10 +1,10 @@
 import { container } from 'tsyringe';
 
-import '@modules/users/providers';
+import '@modules/dealers/providers';
 import '@modules/ecommerce/callbacks/providers';
 
-import IUsersRepository from '@modules/users/repositories/IUsersRepository';
-import UsersRepository from '@modules/users/infra/typeorm/repositories/UsersRepository';
+import IDealersRepository from '@modules/dealers/repositories/IDealersRepository';
+import DealersRepository from '@modules/dealers/infra/typeorm/repositories/DealersRepository';
 
 import IKeysRepository from '@modules/ecommerce/keys/repositories/IKeysRepository';
 import KeysRepository from '@modules/ecommerce/keys/infra/typeorm/repositories/KeysRepository';
@@ -33,9 +33,9 @@ import ErrorAutcomLogsRepository from '@modules/ecommerce/logs/infra/typeorm/rep
 import IAppNotificationsRepository from '@modules/app_notifications/repositories/IAppNotificationsRepository';
 import AppNotificationsRepository from '@modules/app_notifications/infra/mysql2/repositories/AppNotificationsRepository';
 
-container.registerSingleton<IUsersRepository>(
-  'UsersRepository',
-  UsersRepository,
+container.registerSingleton<IDealersRepository>(
+  'DealersRepository',
+  DealersRepository,
 );
 
 container.registerSingleton<IKeysRepository>('KeysRepository', KeysRepository);

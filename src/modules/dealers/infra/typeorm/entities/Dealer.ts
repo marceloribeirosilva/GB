@@ -4,20 +4,27 @@ import {
   PrimaryGeneratedColumn,
   CreateDateColumn,
   UpdateDateColumn,
-  Generated,
 } from 'typeorm';
 
-@Entity('user_tokens')
-class UserToken {
-  @PrimaryGeneratedColumn('uuid')
+import { Exclude } from 'class-transformer';
+
+@Entity('dealers')
+class Dealer {
+  @PrimaryGeneratedColumn()
   id: string;
 
   @Column()
-  @Generated('uuid')
-  token: string;
+  name: string;
 
   @Column()
-  user_id: string;
+  cpf: string;
+
+  @Column()
+  email: string;
+
+  @Column()
+  @Exclude()
+  password: string;
 
   @CreateDateColumn()
   created_at: Date;
@@ -26,4 +33,4 @@ class UserToken {
   updated_at: Date;
 }
 
-export default UserToken;
+export default Dealer;

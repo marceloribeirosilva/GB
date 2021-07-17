@@ -1,11 +1,11 @@
 import { sign } from 'jsonwebtoken';
 import { injectable, inject } from 'tsyringe';
 
-import User from '@modules/users/infra/typeorm/entities/User';
+import Dealer from '@modules/dealers/infra/typeorm/entities/Dealer';
 import authConfig from '@config/auth';
 import AppError from '@shared/errors/AppError';
-import IUsersRepository from '../repositories/IUsersRepository';
-import IHashProvider from '../providers/HashProvider/models/IHashProvider';
+import IDealersRepository from '../repositories/IDealersRepository';
+import IHashProvider from '../providers/HashProvider/interfaces/IHashProvider';
 
 interface IRequest {
   email: string;
@@ -13,10 +13,10 @@ interface IRequest {
 }
 
 @injectable()
-class AuthenticateUserService {
+class AuthenticateDealerService {
   constructor(
-    @inject('UsersRepository')
-    private usersRepository: IUsersRepository,
+    @inject('DealersRepository')
+    private dealersRepository: IDealersRepository,
 
     @inject('HashProvider')
     private hashProvider: IHashProvider,
@@ -25,24 +25,20 @@ class AuthenticateUserService {
   public async execute({
     email,
     password,
-  }: IRequest): Promise<{ user: User; token: string }> {
-    const user = await this.usersRepository.findByEmail(email);
+  }: IRequest): Promise<{ dealer: Dealer; token: string }> {
+    const dealer = await this.dealersRepository.findByEmail(email);
 
-    if (!user) {
+    if (!dealer) {
       throw new AppError('Incorrect email or password', 401);
     }
 
     const passwordMatched = await this.hashProvider.compareHash(
       password,
-      user.password,
+      dealer.password,
     );
 
     if (!passwordMatched) {
       throw new AppError('Incorrect email or password', 401);
-    }
-
-    if (!user.isActive) {
-      throw new AppError('User is not active', 401);
     }
 
     const { secret, expiresIn } = authConfig.jwt;
@@ -51,8 +47,8 @@ class AuthenticateUserService {
       expiresIn,
     });
 
-    return { user, token };
+    return { dealer, token };
   }
 }
 
-export default AuthenticateUserService;
+export default AuthenticateDealerService;

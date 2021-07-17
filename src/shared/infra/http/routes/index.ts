@@ -5,11 +5,11 @@ import customersRouter from '@modules/customers/infra/http/routes/customers.rout
 import callbacksRouter from '@modules/ecommerce/callbacks/infra/http/routes/callbacks.routes';
 import appNotificationsRouter from '@modules/app_notifications/infra/http/routes/app_notifications.routes';
 import ecommerceRouter from './ecommerce';
-import userRouter from './user';
+import dealerRouter from './dealer';
 
 const routes = Router();
 
-routes.use('/users', userRouter);
+routes.use('/dealers', dealerRouter);
 routes.use('/orders', ordersRouter);
 routes.use('/customers', customersRouter);
 routes.use('/ecommerce', ecommerceRouter);

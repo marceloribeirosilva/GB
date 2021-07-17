@@ -6,15 +6,12 @@ import cors from 'cors';
 import 'express-async-errors';
 
 import AppError from '@shared/errors/AppError';
-import rateLimit from './middlewares/rateLimiter';
 import '@shared/infra/typeorm';
-import '@shared/infra/mysql2/AutcomProvider';
 import '@shared/container';
 import routes from './routes';
 
 const app = express();
 
-// app.use(rateLimit);
 app.use(cors());
 app.use(express.json());
 app.use(routes);
