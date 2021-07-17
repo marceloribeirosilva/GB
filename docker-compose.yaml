@@ -1,0 +1,22 @@
+version: '3'
+
+services: 
+    db:
+        image: mysql:5.7
+        command: --innodb-use-native-aio=0
+        container_name: db
+        restart: always
+        tty: true
+        volumes: 
+            - ./mysql:/var/lib/mysql
+        environment: 
+            - MYSQL_DATABASE=gb
+            - MYSQL_ROOT_PASSWORD=gb            
+        networks:
+            - gb-network
+        ports: 
+            - "3306:3306"
+        
+networks: 
+    gb-network:
+        driver: bridge
