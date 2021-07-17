@@ -1,20 +1,14 @@
-import IValidationErrorCitel from './IValidationErrorCitel';
-
 class AppError {
   public readonly message: string;
 
   public readonly statusCode: number;
 
-  public readonly errorCitel: IValidationErrorCitel | null;
-
   constructor(
     message: string,
-    statusCode = 400,
-    errorCitel: IValidationErrorCitel | null = null,
+    statusCode = 400
   ) {
     this.message = message;
-    this.statusCode = statusCode;
-    this.errorCitel = errorCitel;
+    this.statusCode = statusCode;    
   }
 }
 

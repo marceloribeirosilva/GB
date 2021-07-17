@@ -23,6 +23,14 @@ class CreateDealerService {
   ) {}
 
   public async execute({ name, cpf, email, password }: IRequest): Promise<Dealer> {
+    if (!name) throw new AppError('Name field is empty');
+
+    if (!cpf) throw new AppError('CPF field is empty');
+
+    if (!email) throw new AppError('E-mail field is empty');
+
+    if (!password) throw new AppError('Password field is empty');
+
     const checkDealerExists = await this.dealersRepository.findByEmail(email);
 
     if (checkDealerExists) {
