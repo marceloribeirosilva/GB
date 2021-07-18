@@ -17,6 +17,6 @@ export default class DealersController {
       password,
     });
 
-    return response.json(classToClass(dealer));
+    return response.status(201).json(classToClass(dealer));
   }
 }

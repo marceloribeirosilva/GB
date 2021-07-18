@@ -20,7 +20,7 @@ export default class CreateOrders1626574604506 implements MigrationInterface {
                 },
                 {
                   name: 'valor',
-                  type: 'decimal',                  
+                  type: 'decimal(10,2)',                  
                 },
                 {
                   name: 'status',
