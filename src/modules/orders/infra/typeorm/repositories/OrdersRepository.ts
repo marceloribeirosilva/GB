@@ -42,6 +42,14 @@ class OrdersRepository implements IOrdersRepository {
   public async findById(id: number): Promise<Order | undefined> {
     return await this.ormRepository.findOne(id);
   }
+
+  public async delete(id: number): Promise<void> {
+    const order = await this.ormRepository.findOne(id);
+
+    if (order) {
+      await this.ormRepository.remove(order);
+    }
+  }
 }
 
 export default OrdersRepository;

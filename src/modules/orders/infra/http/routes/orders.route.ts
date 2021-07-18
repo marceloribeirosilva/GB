@@ -9,5 +9,6 @@ const ordersController = new OrdersController();
 
 ordersRouter.post('/', ordersController.create);
 ordersRouter.put('/:id', ordersController.update);
+ordersRouter.delete('/:id', ordersController.delete);
 
 export default ordersRouter;
