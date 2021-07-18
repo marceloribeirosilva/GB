@@ -1,4 +1,4 @@
-import Cashback from '@modules/cashbacks/infra/typeorm/entities/Cashback';
+import Order from '@modules/orders/infra/typeorm/entities/Order';
 import {
     Entity,
     Column,
@@ -9,23 +9,20 @@ import {
     JoinColumn
   } from 'typeorm';  
   
-  @Entity('orders')
-  class Order {
+  @Entity('cashbacks')
+  class Cashback {
     @PrimaryGeneratedColumn()
     id: number;
-
-    @OneToOne(type => Cashback)
+    
+    @OneToOne(type => Order)
     @JoinColumn()
-    cashback: Cashback;
-   
-    @Column()
-    cpf: string;
+    order: Order;
   
     @Column("decimal", { precision: 5, scale: 2 })
     valor: number;
   
-    @Column()    
-    status: string;
+    @Column("decimal", { precision: 5, scale: 2 })
+    percentual: number;
   
     @CreateDateColumn()
     created_at: Date;
@@ -34,5 +31,5 @@ import {
     updated_at: Date;
   }
   
-  export default Order;
+  export default Cashback;
   
