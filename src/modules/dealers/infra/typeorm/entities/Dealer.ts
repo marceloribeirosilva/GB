@@ -11,7 +11,7 @@ import { Exclude } from 'class-transformer';
 @Entity('dealers')
 class Dealer {
   @PrimaryGeneratedColumn()
-  id: string;
+  id: number;
 
   @Column()
   name: string;

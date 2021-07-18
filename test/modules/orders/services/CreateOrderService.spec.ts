@@ -4,7 +4,6 @@ import FakeDealersRepository from '../../../../src/modules/dealers/repositories/
 import CreateOrderService from '../../../../src/modules/orders/services/CreateOrderService';
 import CreateDealerService from '../../../../src/modules/dealers/services/CreateDealerService';
 import FakeHashProvider from '../../../../src/modules/dealers/providers/HashProvider/fake/FakeHashProvider';
-import OrderStatus from '../../../../src/modules/orders/enums/OrderStatus';
 
 let fakeOrdersRepository: FakeOrdersRepository;
 let fakeDealersRepository: FakeDealersRepository;

@@ -8,5 +8,6 @@ ordersRouter.use(ensureAuthenticated);
 const ordersController = new OrdersController();
 
 ordersRouter.post('/', ordersController.create);
+ordersRouter.put('/:id', ordersController.update);
 
 export default ordersRouter;

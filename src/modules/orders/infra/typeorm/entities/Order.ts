@@ -9,7 +9,7 @@ import {
   @Entity('orders')
   class Order {
     @PrimaryGeneratedColumn()
-    id: string;
+    id: number;
    
     @Column()
     cpf: string;

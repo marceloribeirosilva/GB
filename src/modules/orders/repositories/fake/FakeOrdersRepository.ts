@@ -3,6 +3,7 @@ import { uuid } from 'uuidv4';
 import Order from '@modules/orders/infra/typeorm/entities/Order';
 import ICreateOrderDTO from '@modules/orders/dtos/ICreateOrderDTO';
 import IOrdersRepository from '../IOrdersRepository';
+import IUpdateOrderDTO from '@modules/orders/dtos/IUpdateOrderDTO';
 
 class FakeOrdersRepository implements IOrdersRepository {
   private orders: Order[] = [];
@@ -12,8 +13,22 @@ class FakeOrdersRepository implements IOrdersRepository {
 
     Object.assign(order, { id: uuid() }, data);
 
-    this.orders.push(order);
+    this.orders.push(order);    
 
+    return order;
+  }
+
+  public async update(data: IUpdateOrderDTO): Promise<Order | undefined> {
+    const findIndex = this.orders.findIndex(orderFind => orderFind.id === data.id);
+    let order = new Order();
+    
+    if (findIndex !== -1) {      
+      Object.assign(order, this.orders[findIndex]);            
+
+      order.status = data.status;
+      order.valor = data.valor
+    }
+    
     return order;
   }
 
@@ -22,6 +37,17 @@ class FakeOrdersRepository implements IOrdersRepository {
 
     this.orders[findIndex] = order;
 
+    return order;
+  }
+
+  public async findById(id: number): Promise<Order | undefined> {
+    const findIndex = this.orders.findIndex(orderFind => orderFind.id === id);
+    let order = new Order();
+    
+    if (findIndex !== -1) {      
+      Object.assign(order, this.orders[findIndex]);
+    }
+    
     return order;
   }
 }
