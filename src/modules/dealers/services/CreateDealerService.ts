@@ -31,10 +31,16 @@ class CreateDealerService {
 
     if (!password) throw new AppError('Password field is empty');
 
-    const checkDealerExists = await this.dealersRepository.findByEmail(email);
+    const checkDealerExists_email = await this.dealersRepository.findByEmail(email);
 
-    if (checkDealerExists) {
+    if (checkDealerExists_email) {
       throw new AppError('Email address already used');
+    }
+
+    const checkDealerExists_cpf = await this.dealersRepository.findByCpf(cpf);
+
+    if (checkDealerExists_cpf) {
+      throw new AppError('Cpf already used');
     }
 
     const hashedPassword = await this.hashProvider.generateHash(password);

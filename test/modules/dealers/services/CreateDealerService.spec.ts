@@ -43,6 +43,24 @@ describe('CreateDealer', () => {
     ).rejects.toBeInstanceOf(AppError);
   });
 
+  it('should not be able to create a new dealer with same cpf from another', async () => { 
+    await createDealer.execute({
+        name: 'John Doe',
+        cpf: '999.999.999-99',
+        email: 'johndoe@example.com',
+        password: '123456',
+      });
+
+    await expect(
+      createDealer.execute({
+        name: 'John Doe',
+        cpf: '999.999.999-99',
+        email: 'johndoe2@example.com',
+        password: '123456',
+      }),
+    ).rejects.toBeInstanceOf(AppError);
+  });
+
   it('should not be able to create a new dealer if name field is empty', async () => {     
     await expect(
       createDealer.execute({
@@ -85,5 +103,5 @@ describe('CreateDealer', () => {
         password: '',
       }),
     ).rejects.toBeInstanceOf(AppError);
-  });
+  });  
 });

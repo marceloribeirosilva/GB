@@ -27,6 +27,14 @@ class DealersRepository implements IDealersRepository {
     return dealer;
   }
 
+  public async findByCpf(cpf: string): Promise<Dealer | undefined> {
+    const dealer = await this.ormRepository.findOne({
+      where: { cpf },
+    });
+
+    return dealer;
+  }
+
   public async findByID(id: string): Promise<Dealer | undefined> {
     const dealer = await this.ormRepository.findOne(id);
 

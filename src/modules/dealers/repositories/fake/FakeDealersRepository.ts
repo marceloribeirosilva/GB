@@ -23,6 +23,12 @@ class FakeDealersRepository implements IDealersRepository {
     return dealer;
   }
 
+  public async findByCpf(cpf: string): Promise<Dealer | undefined> {
+    const dealer = this.dealers.find(dealerFind => dealerFind.cpf === cpf);
+
+    return dealer;
+  }
+
   public async findByID(id: string): Promise<Dealer | undefined> {
     const dealer = this.dealers.find(dealerFind => dealerFind.id === id);
 
