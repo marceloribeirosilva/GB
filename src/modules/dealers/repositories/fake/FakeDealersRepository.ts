@@ -29,7 +29,7 @@ class FakeDealersRepository implements IDealersRepository {
     return dealer;
   }
 
-  public async findByID(id: string): Promise<Dealer | undefined> {
+  public async findByID(id: number): Promise<Dealer | undefined> {
     const dealer = this.dealers.find(dealerFind => dealerFind.id === id);
 
     return dealer;

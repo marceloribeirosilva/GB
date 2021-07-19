@@ -4,6 +4,7 @@ import AppError from '@shared/errors/AppError';
 import IDealersRepository from '../repositories/IDealersRepository';
 import IHashProvider from '../providers/HashProvider/interfaces/IHashProvider';
 import Dealer from '../infra/typeorm/entities/Dealer';
+import FormatCpf from '@shared/services/FormatCpf';
 
 interface IRequest {
   name: string;
@@ -37,7 +38,8 @@ class CreateDealerService {
       throw new AppError('Email address already used');
     }
 
-    const checkDealerExists_cpf = await this.dealersRepository.findByCpf(cpf);
+    const modifiedCpf = FormatCpf.RemoveDotsAndDash(cpf);
+    const checkDealerExists_cpf = await this.dealersRepository.findByCpf(modifiedCpf);
 
     if (checkDealerExists_cpf) {
       throw new AppError('Cpf already used');
@@ -47,7 +49,7 @@ class CreateDealerService {
 
     const dealer = await this.dealersRepository.create({
       name,
-      cpf,
+      cpf: modifiedCpf,
       email,
       password: hashedPassword,
     });

@@ -35,7 +35,7 @@ class DealersRepository implements IDealersRepository {
     return dealer;
   }
 
-  public async findByID(id: string): Promise<Dealer | undefined> {
+  public async findByID(id: number): Promise<Dealer | undefined> {
     const dealer = await this.ormRepository.findOne(id);
 
     return dealer;

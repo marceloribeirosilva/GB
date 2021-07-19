@@ -7,6 +7,7 @@ import ICashbacksRepository from '@modules/cashbacks/repositories/ICashbacksRepo
 import OrderStatus from '../enums/OrderStatus';
 import CreateCashbackService from '@modules/cashbacks/services/CreateCashbackService';
 import IResponseOrderDTO from '../dtos/IResponseOrderDTO';
+import FormatCpf from '@shared/services/FormatCpf';
 
 interface IRequest {
   cpf: string;
@@ -29,15 +30,16 @@ class CreateOrderService {
   public async execute({ cpf, valor }: IRequest): Promise<IResponseOrderDTO> {
     if (!cpf) throw new AppError('CPF field is empty');
 
-    const dealer = await this.dealersRepository.findByCpf(cpf);
+    const modifiedCpf = FormatCpf.RemoveDotsAndDash(cpf);
+    const dealer = await this.dealersRepository.findByCpf(modifiedCpf);
 
     if (!dealer) throw new AppError('Dealer not found');
 
     let status = OrderStatus.InValidation;
-    if (cpf === '153.509.460-56') status = OrderStatus.approved; 
+    if (modifiedCpf === '15350946056') status = OrderStatus.approved; 
 
     const order = await this.ordersRepository.create({
-      cpf,
+      cpf: modifiedCpf,
       valor,
       status
     });
