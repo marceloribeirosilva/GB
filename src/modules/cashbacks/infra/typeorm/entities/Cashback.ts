@@ -14,7 +14,7 @@ import {
     @PrimaryGeneratedColumn()
     id: number;
     
-    @OneToOne(type => Order)
+    @OneToOne(() => Order, order => order.cashback)
     @JoinColumn()
     order: Order;
   

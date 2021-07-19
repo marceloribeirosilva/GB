@@ -50,6 +50,19 @@ class OrdersRepository implements IOrdersRepository {
       await this.ormRepository.remove(order);
     }
   }
+
+  public async findAllByCpf(cpf: string): Promise<Order[] | []> {
+    try{
+      return await this.ormRepository.find({ 
+        relations: ["cashback"],        
+        where: { cpf } 
+      });
+    }
+    catch(err) {
+      console.log(err);
+    }
+    return [];
+  }
 }
 
 export default OrdersRepository;

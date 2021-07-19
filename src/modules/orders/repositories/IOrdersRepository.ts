@@ -8,4 +8,5 @@ export default interface IOrdersRepository {
   save(order: Order): Promise<Order>;
   delete(id: number): Promise<void>;
   findById(id: number): Promise<Order | undefined>;
+  findAllByCpf(cpf: string): Promise<Order[] | []>;
 }

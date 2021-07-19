@@ -58,6 +58,10 @@ class FakeOrdersRepository implements IOrdersRepository {
       this.orders.splice(findIndex, 1);
     }
   }
+
+  public async findAllByCpf(cpf: string): Promise<Order[] | []> {
+    return this.orders.filter(orderFind => orderFind.cpf === cpf);
+  }
 }
 
 export default FakeOrdersRepository;

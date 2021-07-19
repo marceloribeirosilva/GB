@@ -5,6 +5,7 @@ import {
     PrimaryGeneratedColumn,
     CreateDateColumn,
     UpdateDateColumn,
+    OneToOne
   } from 'typeorm';  
   
   @Entity('orders')
@@ -26,6 +27,9 @@ import {
   
     @UpdateDateColumn()
     updated_at: Date;
+
+    @OneToOne(() => Cashback, cashback => cashback.order)        
+    cashback: Cashback;
   }
   
   export default Order;
