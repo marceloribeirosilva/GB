@@ -8,5 +8,6 @@ reportsRouter.use(ensureAuthenticated);
 const reportsController = new ReportsController();
 
 reportsRouter.get('/orders/:cpf', reportsController.showOrders);
+reportsRouter.get('/cashback/:cpf', reportsController.showTotalCashback);
 
 export default reportsRouter;
