@@ -5,18 +5,12 @@ import {
     PrimaryGeneratedColumn,
     CreateDateColumn,
     UpdateDateColumn,
-    OneToOne,
-    JoinColumn
   } from 'typeorm';  
   
   @Entity('orders')
   class Order {
     @PrimaryGeneratedColumn()
     id: number;
-
-    @OneToOne(type => Cashback)
-    @JoinColumn()
-    cashback: Cashback;
    
     @Column()
     cpf: string;

@@ -1,34 +1,38 @@
 import AppError from '../../../../src/shared/errors/AppError';
 import FakeOrdersRepository from '../../../../src/modules/orders/repositories/fake/FakeOrdersRepository';
 import FakeDealersRepository from '../../../../src/modules/dealers/repositories/fake/FakeDealersRepository';
+import FakeCashbacksRepository from '../../../../src/modules/cashbacks/repositories/fake/FakeCashbackRepository';
 import CreateOrderService from '../../../../src/modules/orders/services/CreateOrderService';
-import CreateDealerService from '../../../../src/modules/dealers/services/CreateDealerService';
-import FakeHashProvider from '../../../../src/modules/dealers/providers/HashProvider/fake/FakeHashProvider';
+import Dealer from '../../../../src/modules/dealers/infra/typeorm/entities/Dealer';
 
 let fakeOrdersRepository: FakeOrdersRepository;
 let fakeDealersRepository: FakeDealersRepository;
+let fakeCashbacksRepository : FakeCashbacksRepository;
 let createOrder: CreateOrderService;
-let createDealer: CreateDealerService;
-let fakeHashProvider: FakeHashProvider;
 
 describe('CreateOrder', () => {
   beforeEach(() => {
     fakeOrdersRepository = new FakeOrdersRepository();
     fakeDealersRepository = new FakeDealersRepository();
-    fakeHashProvider = new FakeHashProvider();
-    createOrder = new CreateOrderService(fakeOrdersRepository, fakeDealersRepository);
-    createDealer = new CreateDealerService(fakeDealersRepository, fakeHashProvider);
+    fakeCashbacksRepository = new FakeCashbacksRepository();    
+    createOrder = new CreateOrderService(fakeOrdersRepository, fakeDealersRepository, fakeCashbacksRepository);    
   });
 
-  it('should be able to create a new order', async () => {
-    await createDealer.execute({
+  it('should be able to create a new order', async () => {    
+    const dealer: Dealer = {
+      id: 10,
       name: 'John Doe',
       cpf: '999.999.999-99',
       email: 'johndoe@example.com',
       password: '123456',
-    });
+      created_at: new Date(),
+      updated_at: new Date(),
+    };
 
-    const order = await createOrder.execute({
+    jest.spyOn(fakeDealersRepository, "findByCpf").mockImplementation(() => (Promise.resolve(dealer)));
+
+    
+    const { order } = await createOrder.execute({
       cpf: '999.999.999-99',
       valor: 990,
     });
@@ -55,19 +59,23 @@ describe('CreateOrder', () => {
   });
 
   it('should be able to create a new order with status Aprovado when cpf is equal 153.509.460-56', async () => {
-    await createDealer.execute({
+    const dealer: Dealer = {
+      id: 10,
       name: 'John Doe',
       cpf: '153.509.460-56',
       email: 'johndoe@example.com',
       password: '123456',
-    });
+      created_at: new Date(),
+      updated_at: new Date(),
+    };
+
+    jest.spyOn(fakeDealersRepository, "findByCpf").mockImplementation(() => (Promise.resolve(dealer)));
     
-    const order = await createOrder.execute({
+    const { order } = await createOrder.execute({
       cpf: '153.509.460-56',
       valor: 990,      
     });
 
     expect(order.status).toEqual('Aprovado');
   });
-
 });

@@ -1,10 +1,12 @@
-import { injectable, inject } from 'tsyringe';
+import { injectable, inject, container } from 'tsyringe';
 import AppError from '@shared/errors/AppError';
 
 import IOrdersRepository from '../repositories/IOrdersRepository';
 import IDealersRepository from '@modules/dealers/repositories/IDealersRepository';
-import Order from '../infra/typeorm/entities/Order';
+import ICashbacksRepository from '@modules/cashbacks/repositories/ICashbacksRepository';
 import OrderStatus from '../enums/OrderStatus';
+import CreateCashbackService from '@modules/cashbacks/services/CreateCashbackService';
+import IResponseOrderDTO from '../dtos/IResponseOrderDTO';
 
 interface IRequest {
   cpf: string;
@@ -19,9 +21,12 @@ class CreateOrderService {
 
     @inject('DealersRepository')
     private dealersRepository: IDealersRepository,
+
+    @inject('CashbacksRepository')
+    private cashbacksRepository: ICashbacksRepository,
   ) {}
 
-  public async execute({ cpf, valor }: IRequest): Promise<Order> {
+  public async execute({ cpf, valor }: IRequest): Promise<IResponseOrderDTO> {
     if (!cpf) throw new AppError('CPF field is empty');
 
     const dealer = await this.dealersRepository.findByCpf(cpf);
@@ -37,7 +42,17 @@ class CreateOrderService {
       status
     });
 
-    return order;
+    const cashbackService = new CreateCashbackService(this.cashbacksRepository);
+
+    const cashback = await cashbackService.execute(order);    
+
+    return {
+      order,
+      cashback: {
+        valor: cashback.valor,
+        percentual: cashback.percentual * 100
+      }
+    };
   }
 }
 

@@ -1,38 +1,41 @@
 import FakeOrdersRepository from '../../../../src/modules/orders/repositories/fake/FakeOrdersRepository';
 import FakeDealersRepository from '../../../../src/modules/dealers/repositories/fake/FakeDealersRepository';
+import FakeCashbacksRepository from '../../../../src/modules/cashbacks/repositories/fake/FakeCashbackRepository';
 import CreateOrderService from '../../../../src/modules/orders/services/CreateOrderService';
 import UpdateOrderService from '../../../../src/modules/orders/services/UpdateOrderService';
-import CreateDealerService from '../../../../src/modules/dealers/services/CreateDealerService';
-import FakeHashProvider from '../../../../src/modules/dealers/providers/HashProvider/fake/FakeHashProvider';
 import OrderStatus from '../../../../src/modules/orders/enums/OrderStatus';
 import AppError from '../../../../src/shared/errors/AppError';
+import Dealer from '../../../../src/modules/dealers/infra/typeorm/entities/Dealer';
 
 let fakeOrdersRepository: FakeOrdersRepository;
 let fakeDealersRepository: FakeDealersRepository;
+let fakeCashbacksRepository : FakeCashbacksRepository;
 let createOrder: CreateOrderService;
 let updateOrder: UpdateOrderService;
-let createDealer: CreateDealerService;
-let fakeHashProvider: FakeHashProvider;
 
 describe('UpdateOrder', () => {
   beforeEach(() => {
     fakeOrdersRepository = new FakeOrdersRepository();
     fakeDealersRepository = new FakeDealersRepository();
-    fakeHashProvider = new FakeHashProvider();
-    createOrder = new CreateOrderService(fakeOrdersRepository, fakeDealersRepository);
-    updateOrder = new UpdateOrderService(fakeOrdersRepository);
-    createDealer = new CreateDealerService(fakeDealersRepository, fakeHashProvider);
+    fakeCashbacksRepository = new FakeCashbacksRepository();    
+    createOrder = new CreateOrderService(fakeOrdersRepository, fakeDealersRepository, fakeCashbacksRepository);
+    updateOrder = new UpdateOrderService(fakeOrdersRepository);    
   });
 
   it('should be able to update a order', async () => {
-    await createDealer.execute({
+    const dealer: Dealer = {
+      id: 10,
       name: 'John Doe',
       cpf: '999.999.999-99',
       email: 'johndoe@example.com',
       password: '123456',
-    });
+      created_at: new Date(),
+      updated_at: new Date(),
+    };
 
-    const createdOrder = await createOrder.execute({
+    jest.spyOn(fakeDealersRepository, "findByCpf").mockImplementation(() => (Promise.resolve(dealer)));
+
+    const {order: createdOrder} = await createOrder.execute({
       cpf: '999.999.999-99',
       valor: 990,
     });    
@@ -48,14 +51,19 @@ describe('UpdateOrder', () => {
   }); 
   
   it('should not be able to update a order with status to equal Aprovado', async () => {
-    await createDealer.execute({
+    const dealer: Dealer = {
+      id: 10,
       name: 'John Doe',
       cpf: '153.509.460-56',
       email: 'johndoe@example.com',
       password: '123456',
-    });
+      created_at: new Date(),
+      updated_at: new Date(),
+    };
 
-    const createdOrder = await createOrder.execute({
+    jest.spyOn(fakeDealersRepository, "findByCpf").mockImplementation(() => (Promise.resolve(dealer)));
+
+    const {order: createdOrder} = await createOrder.execute({
       cpf: '153.509.460-56',
       valor: 990,
     });      

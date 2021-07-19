@@ -8,6 +8,9 @@ import DealersRepository from '@modules/dealers/infra/typeorm/repositories/Deale
 import IOrdersRepository from '@modules/orders/repositories/IOrdersRepository';
 import OrdersRepository from '@modules/orders/infra/typeorm/repositories/OrdersRepository';
 
+import ICashbacksRepository from '@modules/cashbacks/repositories/ICashbacksRepository';
+import CashbacksRepository from '@modules/cashbacks/infra/typeorm/repositories/CashbacksRepository';
+
 container.registerSingleton<IDealersRepository>(
   'DealersRepository',
   DealersRepository,
@@ -16,4 +19,9 @@ container.registerSingleton<IDealersRepository>(
 container.registerSingleton<IOrdersRepository>(
   'OrdersRepository',
   OrdersRepository,
+);
+
+container.registerSingleton<ICashbacksRepository>(
+  'CashbacksRepository',
+  CashbacksRepository,
 );
