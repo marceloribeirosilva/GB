@@ -17,10 +17,11 @@ export default class ReportsController {
     for (let order of orders) {
       const formattedOrder: IResponseShowOrdersByCpf = {
         codigo: order.id,
-        data: order.created_at.toDateString(),
+        data: order.created_at.toString(),
         valor: order.valor,
         "%_cashback": order.cashback.percentual * 100,
-        $_cashback: order.cashback.valor
+        $_cashback: order.cashback.valor,
+        status: order.status
       }
 
       formattedOrders.push(formattedOrder);

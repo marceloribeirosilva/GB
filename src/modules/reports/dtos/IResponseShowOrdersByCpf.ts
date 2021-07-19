@@ -4,4 +4,5 @@ export default interface IResponseShowOrdersByCpf {
     data: string;
     '%_cashback': number;
     '$_cashback': number;
+    status: string;
 }
