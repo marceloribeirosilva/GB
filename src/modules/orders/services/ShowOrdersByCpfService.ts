@@ -6,7 +6,7 @@ import Order from '../infra/typeorm/entities/Order';
 import FormatCpf from '@shared/services/FormatCpf';
 
 @injectable()
-class ShowOrdersByCpf {
+class ShowOrdersByCpfService {
   constructor(
     @inject('OrdersRepository')
     private ordersRepository: IOrdersRepository,    
@@ -16,10 +16,10 @@ class ShowOrdersByCpf {
     if (!cpf) throw new AppError('CPF field is empty');
 
     const modifiedCpf = FormatCpf.RemoveDotsAndDash(cpf);
-    const orders = this.ordersRepository.findAllByCpf(modifiedCpf);
+    const orders = this.ordersRepository.findAllByCpf(modifiedCpf);    
 
     return orders;
   }
 }
 
-export default ShowOrdersByCpf;
+export default ShowOrdersByCpfService;

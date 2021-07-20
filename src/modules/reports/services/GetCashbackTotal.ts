@@ -1,7 +1,6 @@
-import AppError from '@shared/errors/AppError';
 import axios from 'axios';
 
-class GetAllDealsService {
+class GetCashbackTotal {
     public async execute(cpf: string): Promise<number> {
         let total = 0;        
         const response = await axios.get(`https://mdaqk8ek5j.execute-api.us-east-1.amazonaws.com/v1/cashback?cpf=${cpf}`, 
@@ -14,4 +13,4 @@ class GetAllDealsService {
     }    
 }
 
-export default GetAllDealsService;
+export default GetCashbackTotal;

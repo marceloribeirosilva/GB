@@ -1,7 +1,7 @@
 import { Request, Response } from 'express';
 import { container } from 'tsyringe';
 
-import ShowOrdersByCpf from '@modules/orders/services/ShowOrdersByCpf';
+import ShowOrdersByCpfService from '@modules/orders/services/ShowOrdersByCpfService';
 import IResponseShowOrdersByCpf from '@modules/reports/dtos/IResponseShowOrdersByCpf';
 import GetCashbackTotal from '@modules/reports/services/GetCashbackTotal';
 import FormatCpf from '@shared/services/FormatCpf';
@@ -10,7 +10,7 @@ export default class ReportsController {
   public async showOrders(request: Request, response: Response): Promise<Response> {
     const { cpf } = request.params;
 
-    const showOrdersCpf = container.resolve(ShowOrdersByCpf);
+    const showOrdersCpf = container.resolve(ShowOrdersByCpfService);
 
     const orders = await showOrdersCpf.execute(cpf);
 
